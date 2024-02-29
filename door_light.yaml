@@ -50,8 +50,8 @@ max_exceeded: silent
 trigger:
   platform: state
   entity_id: !input door_entity
-  from: 'closed'
-  to: 'opened'
+  from: 'Closed'
+  to: 'Opened'
 condition:
   - condition: time
     after: !input after_time
@@ -64,8 +64,8 @@ action:
   wait_for_trigger:
     platform: state
     entity_id: !input door_entity
-    from: 'opened'
-    to: 'closed'
+    from: 'Opened'
+    to: 'Closed'
 - alias: Wait the number of seconds that has been set
   delay: !input closed_door_wait
 - alias: Turn off the light
