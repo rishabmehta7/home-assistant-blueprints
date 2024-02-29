@@ -1,0 +1,72 @@
+blueprint:
+  name: Door-activated Light
+  description: Turn on a light when door is opened.
+  domain: automation
+  author: Rishab Mehta
+  input:
+    door_entity:
+      name: Door Sensor
+      selector:
+        entity:
+          filter:
+          - device_class:
+            - door
+            domain:
+            - binary_sensor
+          multiple: false
+    light_target:
+      name: Light
+      selector:
+        target:
+          entity:
+          - domain:
+            - light
+    closed_door_wait:
+      name: Wait time
+      description: Time to leave the light on after door is closed.
+      default: 30
+      selector:
+        number:
+          min: 0.0
+          max: 3600.0
+          unit_of_measurement: seconds
+          step: 1.0
+          mode: slider
+    before_time:
+      name: Before time
+      description: Time after which the automation will run.
+      default: "06:00:00"
+      selector:
+        time:
+    after_time:
+      name: After time
+      description: Time before which the automation will run.
+      default: "18:00:00"
+      selector:
+        time:
+mode: restart
+max_exceeded: silent
+trigger:
+  platform: state
+  entity_id: !input door_entity
+  from: 'close'
+  to: 'open'
+condition:
+  - condition: time
+    after: !input fter_time
+    before: !input before_time
+action:
+- alias: Turn on the light
+  service: light.turn_on
+  target: !input light_target
+- alias: Wait until door is closed
+  wait_for_trigger:
+    platform: state
+    entity_id: !input door_entity
+    from: 'open'
+    to: 'close'
+- alias: Wait the number of seconds that has been set
+  delay: !input closed_door_wait
+- alias: Turn off the light
+  service: light.turn_off
+  target: !input light_target
