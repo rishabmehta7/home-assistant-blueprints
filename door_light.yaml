@@ -2,6 +2,7 @@ blueprint:
   name: Door-activated Light
   description: Turn on a light when door is opened.
   domain: automation
+  source_url: https://github.com/home-assistant/core/blob/dev/homeassistant/components/automation/blueprints/motion_light.yaml
   author: Rishab Mehta
   input:
     door_entity:
