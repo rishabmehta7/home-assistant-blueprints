@@ -54,7 +54,7 @@ trigger:
   to: 'open'
 condition:
   - condition: time
-    after: !input fter_time
+    after: !input after_time
     before: !input before_time
 action:
 - alias: Turn on the light
